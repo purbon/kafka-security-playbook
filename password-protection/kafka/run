@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+echo "===> Configuring ..."
+#/etc/confluent/docker/configure
+
+echo "===> Override with local server.properties file and others ..."
+
+cp /tmp/server.properties /etc/kafka/server.properties
+cp /tmp/kafka_server_jaas.conf /etc/kafka/kafka_server_jaas.conf
+cp /tmp/log4j.properties /etc/kafka/log4j.properties
+cp /tmp/kafka.properties /etc/kafka/kafka.properties
+cp /tmp/security.properties /etc/kafka/security.properties
+
+
+echo "===> Running preflight checks ... "
+/etc/confluent/docker/ensure
+
+kafka-server-start /etc/kafka/server.properties

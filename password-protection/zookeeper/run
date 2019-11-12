@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+echo "===> Configuring ..."
+#/etc/confluent/docker/configure
+
+echo "===> Override with local zookeeper.properties file and others ..."
+
+cp /tmp/tmp/zookeeper.properties /etc/kafka/zookeeper.properties
+cp /tmp/zookeeper.jaas  /etc/kafka/zookeeper.jaas
+cp /tmp/security.properties /etc/kafka/security.properties
+
+
+echo "===> Running preflight checks ... "
+/etc/confluent/docker/ensure
+
+zookeeper-server-start /etc/kafka/zookeeper.properties

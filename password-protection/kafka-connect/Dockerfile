@@ -1,4 +1,3 @@
-#FROM confluentinc/cp-kafka-connect:5.3.1
 FROM confluentinc/cp-server:5.3.1
 MAINTAINER pere.urbon@acm.org
 ENV container docker
