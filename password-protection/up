@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -e
+
+echo "Secret encryption"
+
+confluent secret file encrypt --config-file ./kafka-connect/kafka-connect.properties \
+  --local-secrets-file ././kafka-connect/security.properties \
+  --remote-secrets-file /etc/kafka-connect/security.properties \
+  --config "config.storage.topic"
+
+echo "Docker containers start"
+docker-compose up -d --force-recreate --build 
+
+#confluent secret file decrypt \
+#--local-secrets-file ./connect/security.properties \
+#--config-file ./connect/kafka-connect.properties \
+#--output-file decrypt.txt
