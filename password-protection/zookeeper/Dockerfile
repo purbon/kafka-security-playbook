@@ -3,7 +3,9 @@ MAINTAINER pere.urbon@acm.org
 ENV container docker
 
 COPY zookeeper.properties /tmp/zookeeper.properties
-COPY zookeeper.jaas /tmp/zookeeper.jaas
+COPY zookeeper.jaas /tmp/zookeeper.jaas+
+COPY security.properties /tmp/security.properties
+
 
 EXPOSE 2181
 

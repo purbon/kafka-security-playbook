@@ -14,22 +14,10 @@ confluent secret file encrypt --config-file ./kafka/server.properties \
     --config "listener.name.sasl_plaintext.scram-sha-256.sasl.jaas.config"
 
 echo "Docker containers start"
-docker-compose up -d --build zookeeper
-
-
-# docker-compose exec kafka kafka-configs --zookeeper zookeeper:2181 --alter --add-config 'SCRAM-SHA-256=[password=kafka],SCRAM-SHA-512=[password=kafka]' --entity-type users --entity-name kafka
+docker-compose up -d --build kafka
 
 docker-compose exec zookeeper  kafka-configs --zookeeper zookeeper:2181 --alter --add-config 'SCRAM-SHA-256=[iterations=8192,password=kafka-secret]' --entity-type users --entity-name kafka
-
-docker-compose up -d --build kafka
 
 echo "Example configuration:"
 echo "Should succeed (kafka is a super user)"
 echo "-> docker-compose exec kafka kafka-console-producer --broker-list kafka:9092 --topic test-topic --producer.config=/etc/kafka/kafka.properties"
-
-
-
-#confluent secret file decrypt \
-#--local-secrets-file ./connect/security.properties \
-#--config-file ./connect/kafka-connect.properties \
-#--output-file decrypt.txt

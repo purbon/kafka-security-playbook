@@ -5,7 +5,7 @@ services:
     container_name: zookeeper
     build: zookeeper/
     environment:
-      CONFLUENT_SECURITY_MASTER_KEY: +WnlKlf5LJMS5NU1je4k+Oeay+2lGt+dnJj69oOScdo=
+      CONFLUENT_SECURITY_MASTER_KEY: "${CONFLUENT_SECURITY_MASTER_KEY}"
     volumes:
       - ./etc/zookeeper:/etc/kafka
 
@@ -17,7 +17,7 @@ services:
     ports:
       - 9092:9092
     environment:
-      CONFLUENT_SECURITY_MASTER_KEY: +WnlKlf5LJMS5NU1je4k+Oeay+2lGt+dnJj69oOScdo=
+      CONFLUENT_SECURITY_MASTER_KEY: "${CONFLUENT_SECURITY_MASTER_KEY}"
     volumes:
       - ./etc/kafka:/etc/kafka
 
@@ -32,7 +32,7 @@ services:
     volumes:
       - ./etc/connect:/etc/kafka-connect
     environment:
-      CONFLUENT_SECURITY_MASTER_KEY: +WnlKlf5LJMS5NU1je4k+Oeay+2lGt+dnJj69oOScdo=
+      CONFLUENT_SECURITY_MASTER_KEY: "${CONFLUENT_SECURITY_MASTER_KEY}"
       CONNECT_BOOTSTRAP_SERVERS: "kafka:29092"
       CONNECT_REST_PORT: 18083
       CONNECT_GROUP_ID: kafka-connect-cp
