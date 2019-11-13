@@ -3,11 +3,6 @@ set -e
 
 echo "Secret encryption"
 
-confluent secret file encrypt --config-file ./kafka-connect/kafka-connect.properties \
-  --local-secrets-file ./kafka-connect/security.properties \
-  --remote-secrets-file /etc/kafka-connect/security.properties \
-  --config "config.storage.topic"
-
 confluent secret file encrypt --config-file ./kafka/server.properties \
     --local-secrets-file ./kafka/security.properties \
     --remote-secrets-file /etc/kafka/security.properties \
