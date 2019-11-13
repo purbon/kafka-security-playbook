@@ -9,6 +9,7 @@ COPY kafka.jaas.config /tmp/kafka_server_jaas.conf
 COPY log4j.properties /tmp/log4j.properties
 COPY kafka.properties /tmp/kafka.properties
 COPY security.properties /tmp/security.properties
+COPY tools-log4j.properties /usr/config/tools-log4j.properties
 
 ENV KAFKA_OPTS -Djava.security.auth.login.config=/etc/kafka/kafka_server_jaas.conf
 

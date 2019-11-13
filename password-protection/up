@@ -21,3 +21,4 @@ docker-compose exec zookeeper  kafka-configs --zookeeper zookeeper:2181 --alter 
 echo "Example configuration:"
 echo "Should succeed (kafka is a super user)"
 echo "-> docker-compose exec kafka kafka-console-producer --broker-list kafka:9092 --topic test-topic --producer.config=/etc/kafka/kafka.properties"
+echo "-> docker-compose exec kafka kafka-console-consumer --bootstrap-server kafka:9092 --topic test-topic --consumer.config=/etc/kafka/kafka.properties --from-beginning"
