@@ -44,7 +44,8 @@ sign_intermediate_cert_authority () {
             -days 3650 -notext -md sha256 \
             -in intermediate/csr/intermediate.csr.pem \
             -passin pass:$DEFAULT_PASSWORD \
-            -out intermediate/certs/intermediate.cert.pem
+            -out intermediate/certs/intermediate.cert.pem \
+            -batch
   chmod 444 intermediate/certs/intermediate.cert.pem
 }
 
@@ -66,7 +67,7 @@ generate_final_certificate () {
   chmod 400 intermediate/private/$HOSTNAME.key.pem
 
   # create a csr
-  openssl req -config intermediate/openssl.cnf \
+  openssl req -config intermediate/single-certs-openssl.cnf \
         -passin pass:confluent -passout pass:$DEFAULT_PASSWORD \
         -key intermediate/private/$HOSTNAME.key.pem \
         -new -sha256 -out intermediate/csr/$HOSTNAME.csr.pem

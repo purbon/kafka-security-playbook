@@ -15,6 +15,8 @@ mkdir -p $ITERMEDIATE_CA_DIR
 setup_intermediate_ca_dir_structure $ITERMEDIATE_CA_DIR
 
 cp $CA_ROOT_DIR/configs/intermediate-ca.config $ITERMEDIATE_CA_DIR/openssl.cnf
+cp $CA_ROOT_DIR/configs/single-certs.config $ITERMEDIATE_CA_DIR/single-certs-openssl.cnf
+
 
 (cd $ITERMEDIATE_CA_DIR; generate_intermediate_keys_and_certs)
 
