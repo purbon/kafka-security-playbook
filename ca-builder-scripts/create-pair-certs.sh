@@ -7,7 +7,8 @@
 #EXTENSION="usr_cert"
 
 HOSTNAME=$1
-EXTENSION=$2
+EXTENSION=${2:-server_cert}
+SUBJECT="/C=DE/ST=Berlin/L=Berlin/O=Confluent Ltd/OU=PS/CN=$HOSTNAME"
 DEFAULT_PASSWORD=${3:-confluent}
 
 echo "Building a part of certificates for $HOSTNAME using $EXTENSION"

@@ -70,13 +70,15 @@ generate_final_certificate () {
   openssl req -config intermediate/single-certs-openssl.cnf \
         -passin pass:confluent -passout pass:$DEFAULT_PASSWORD \
         -key intermediate/private/$HOSTNAME.key.pem \
-        -new -sha256 -out intermediate/csr/$HOSTNAME.csr.pem
+        -new -sha256 -out intermediate/csr/$HOSTNAME.csr.pem \
+        -subj "$SUBJECT"
 
   # create the cert
   openssl ca -config intermediate/openssl.cnf -extensions $EXTENSION -days 375 -notext -md sha256 \
              -in intermediate/csr/$HOSTNAME.csr.pem \
              -passin pass:$DEFAULT_PASSWORD \
-             -out intermediate/certs/$HOSTNAME.cert.pem
+             -out intermediate/certs/$HOSTNAME.cert.pem \
+             -batch
 
   chmod 444 intermediate/certs/$HOSTNAME.cert.pem
 
