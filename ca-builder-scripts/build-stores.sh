@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-DEFAULT_PASSWORD=${1:-confluent}
+DEFAULT_PASSWORD=${2:-confluent}
+HOSTNAME=$1
 
 if [ -z "${CA_ROOT_DIR+x}" ];
 then
@@ -13,7 +14,8 @@ CA_KEY="$CA_ROOT_DIR/ca/private/ca.key.pem"
 INT_CA_CERT="$CA_ROOT_DIR/ca/intermediate/certs/intermediate.cert.pem"
 INT_CA_KEY="$CA_ROOT_DIR/ca/intermediate/private/intermediate.key.pem"
 
-mkdir stores tmp-certs
+
+mkdir -p stores tmp-certs
 
 function build_store {
   certs_array=$1
@@ -42,9 +44,5 @@ function build_store {
 
 ## buildind stores for the brokers
 
-certs_array=("kafka.confluent.local")
-build_store "${certs_array[@]}" broker
-
-## building stores for the producers
-certs_array=("producer2")
-build_store "${certs_array[@]}" client
+certs_array=($HOSTNAME)
+build_store "${certs_array[@]}" $HOSTNAME
