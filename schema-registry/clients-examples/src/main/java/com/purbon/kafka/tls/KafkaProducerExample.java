@@ -34,23 +34,24 @@ public class KafkaProducerExample {
     KafkaProducer producer = new KafkaProducer(config());
 
     String key = "key1";
-    String userSchema = "{\"type\":\"record\"," +
-        "\"name\":\"myrecord\"," +
-        "\"fields\":[{\"name\":\"f1\",\"type\":\"string\"}]}";
+    String userSchema =
+        "{\"type\":\"record\","
+            + "\"name\":\"myrecord\","
+            + "\"fields\":[{\"name\":\"f1\",\"type\":\"string\"}]}";
 
     Schema.Parser parser = new Schema.Parser();
     Schema schema = parser.parse(userSchema);
 
-    String[] values = new String[]{ "value1", "value2", "value3"};
+    String[] values = new String[] {"value1", "value2", "value3"};
 
-    for(String value : values) {
+    for (String value : values) {
       GenericRecord avroRecord = new GenericData.Record(schema);
       avroRecord.put("f1", value);
-      ProducerRecord<Object, Object> record = new ProducerRecord<Object, Object>(OUTPUT_TOPIC, key, avroRecord);
+      ProducerRecord<Object, Object> record =
+          new ProducerRecord<Object, Object>(OUTPUT_TOPIC, key, avroRecord);
       producer.send(record);
     }
     producer.flush();
     producer.close();
-
   }
 }

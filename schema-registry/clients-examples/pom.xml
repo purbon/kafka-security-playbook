@@ -8,6 +8,34 @@
   <artifactId>ClientExamples</artifactId>
   <version>1.0-SNAPSHOT</version>
 
+
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- plugins -->
+    <maven-pmd-plugin.version>3.12.0</maven-pmd-plugin.version>
+    <spotbugs-maven-plugin.version>3.1.12.2</spotbugs-maven-plugin.version>
+    <maven-site-plugin.version>3.9.0</maven-site-plugin.version>
+    <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
+    <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
+    <rpm-maven-plugin.version>2.2.0</rpm-maven-plugin.version>
+    <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+    <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+    <maven-failsafe-plugin.version>2.22.2</maven-failsafe-plugin.version>
+    <!-- dependencies -->
+    <jackson.version>2.10.3</jackson.version>
+    <confluent.version>5.5.0-ccs</confluent.version>
+    <avro-serializer.version>5.5.0</avro-serializer.version>
+    <log4j.version>2.13.1</log4j.version>
+    <httpclient.version>4.5.11</httpclient.version>
+    <zookeeper.version>3.5.7</zookeeper.version>
+    <commons.version>1.4</commons.version>
+    <mockito.version>1.10.19</mockito.version>
+    <junit.version>4.12</junit.version>
+    <testcontainers.version>1.13.0</testcontainers.version>
+  </properties>
+  
+
   <repositories>
 
     <repository>
@@ -17,21 +45,74 @@
 
   </repositories>
 
-
   <dependencies>
 
   <dependency>
     <groupId>org.apache.kafka</groupId>
     <artifactId>kafka_2.12</artifactId>
-    <version>5.5.0-ccs</version>
+    <version>${confluent.version}</version>
   </dependency>
 
     <dependency>
       <groupId>io.confluent</groupId>
       <artifactId>kafka-avro-serializer</artifactId>
-      <version>5.5.0</version>
+      <version>${avro-serializer.version}</version>
     </dependency>
 
   </dependencies>
+
+  <build>
+  <finalName>${project.artifactId}</finalName>
+  <plugins>
+  <plugin>
+    <groupId>com.coveo</groupId>
+    <artifactId>fmt-maven-plugin</artifactId>
+    <version>2.9</version>
+    <configuration>
+      <style>google</style>
+    </configuration>
+    <executions>
+      <execution>
+        <goals>
+          <goal>format</goal>
+        </goals>
+      </execution>
+    </executions>
+  </plugin>
+
+  <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>${maven-compiler-plugin.version}</version>
+    <configuration>
+      <source>8</source>
+      <target>8</target>
+    </configuration>
+  </plugin>
+
+  <plugin>
+    <artifactId>maven-assembly-plugin</artifactId>
+    <configuration>
+      <descriptorRefs>
+        <descriptorRef>jar-with-dependencies</descriptorRef>
+      </descriptorRefs>
+      <archive>
+        <manifest>
+          <mainClass>com.purbon.kafka.topology.BuilderCLI</mainClass>
+        </manifest>
+      </archive>
+    </configuration>
+    <executions>
+      <execution>
+        <id>make-assembly</id>
+        <phase>package</phase>
+        <goals>
+          <goal>single</goal>
+        </goals>
+      </execution>
+    </executions>
+  </plugin>
+  </plugins>
+  </build>
 
 </project>
