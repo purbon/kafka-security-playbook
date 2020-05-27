@@ -1,0 +1,33 @@
+
+export JAVA_OPTS="-Djavax.net.ssl.trustStore=/etc/kafka/secrets/schema-registry.truststore \
+            -Djavax.net.ssl.trustStorePassword=confluent \
+            -Djavax.net.ssl.keyStore=/etc/kafka/secrets/schema-registry.keystore \
+            -Djavax.net.ssl.keyStorePassword=confluent"
+
+docker-compose exec schema-registry kafka-avro-console-producer \
+            --broker-list kafka:29092 \
+            --property schema.registry.url=https://schema-registry:8082 \
+            --topic t1-a \
+            --property value.schema='{"type":"record","name":"myrecord","fields":[{"name":"f1","type":"string"}]}'
+
+
+docker-compose exec schema-registry sr-acl-cli --config /etc/schema-registry/schema-registry.properties \
+                    --add -s '*' \
+                    -p 'CN=client,O=Confluent Ltd,L=Berlin,ST=Berlin,C=DE' \
+                    -o '*'
+
+
+docker-compose exec schema-registry kafka-avro-console-producer \
+        --broker-list kafka:29092 \
+        --property schema.registry.url=https://schema-registry:8082 \
+        --topic t1-a \
+        --property schema.registry.ssl.truststore.location=/etc/kafka/secrets/client.truststore \
+        --property schema.registry.ssl.truststore.password=confluent \
+        --property schema.registry.ssl.keystore.location=/etc/kafka/secrets/client.keystore \
+        --property schema.registry.ssl.keystore.password=confluent \
+        --property schema.registry.ssl.key.password=confluent \
+        --property value.schema='{"type":"record","name":"myrecord","fields":[{"name":"f1","type":"string"}]}'
+
+# Message sample
+# {"f1": "value1-a"}
+# {"f1": "value2-b"}

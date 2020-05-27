@@ -9,6 +9,7 @@ services:
 
   kafka:
     image: confluentinc/cp-enterprise-kafka:5.4.0
+    container_name: kafka
     depends_on:
       - zookeeper
     ports:
@@ -30,6 +31,7 @@ services:
   schema-registry:
     image: confluentinc/cp-schema-registry:5.4.0
     container_name: schema-registry
+    hostname: schema-registry
     depends_on:
       - zookeeper
       - kafka
