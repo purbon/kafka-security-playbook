@@ -78,3 +78,42 @@ services:
       CONNECT_LISTENERS_HTTPS_SSL_KEYSTORE_LOCATION: /etc/kafka-connect/secrets/server.keystore
       CONNECT_LISTENERS_HTTPS_SSL_KEYSTORE_PASSWORD: confluent
       CONNECT_LISTENERS_HTTPS_SSL_CLIENT_AUTH: required
+
+  kafka-connect-cp2:
+    image: confluentinc/cp-kafka-connect:5.3.1
+    container_name: kafka-connect-2
+    depends_on:
+      - zookeeper
+      - kafka
+      - schema-registry
+    ports:
+      - 18084:18083
+    volumes:
+      - ./connect/secrets:/etc/kafka-connect/secrets
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: "kafka:29092"
+      CONNECT_REST_PORT: 18083
+      CONNECT_GROUP_ID: kafka-connect-cp
+      CONNECT_CONFIG_STORAGE_TOPIC: docker-kafka-connect-cp-configs
+      CONNECT_OFFSET_STORAGE_TOPIC: docker-kafka-connect-cp-offsets
+      CONNECT_STATUS_STORAGE_TOPIC: docker-kafka-connect-cp-status
+      CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
+      CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
+      CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_REST_ADVERTISED_HOST_NAME: "kafka-connect-cp"
+      CONNECT_LOG4J_ROOT_LOGLEVEL: "INFO"
+      CONNECT_LOG4J_LOGGERS: "org.apache.kafka.connect.runtime.rest=WARN,org.reflections=ERROR"
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: "1"
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: "1"
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
+      CONNECT_PLUGIN_PATH: '/usr/share/java'
+      CONNECT_LISTENERS: 'https://0.0.0.0:18083'
+      CONNECT_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: "HTTPS"
+      CONNECT_LISTENERS_HTTPS_SSL_TRUSTSTORE_LOCATION: /etc/kafka-connect/secrets/server.truststore
+      CONNECT_LISTENERS_HTTPS_SSL_TRUSTSTORE_PASSWORD: confluent
+      CONNECT_LISTENERS_HTTPS_SSL_KEYSTORE_LOCATION: /etc/kafka-connect/secrets/server.keystore
+      CONNECT_LISTENERS_HTTPS_SSL_KEYSTORE_PASSWORD: confluent
+      CONNECT_LISTENERS_HTTPS_SSL_CLIENT_AUTH: required
